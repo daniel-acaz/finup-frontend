@@ -1,6 +1,6 @@
-import { Html5Qrcode, Html5QrcodeScannerState } from 'html5-qrcode';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import './welcome.css';
+import { Html5Qrcode } from 'html5-qrcode';
+import { useEffect, useRef, useState } from 'react';
+import './new.css';
 import { useFetchCameras } from '~/shared/useFetchCameras';
 
 interface IInfoProps {
@@ -29,11 +29,11 @@ const itQrCodeErrorCallback = (errorMessage: string) => {
   
 }
 
-const config = { fps: 10, qrbox: { width: 250, height: 250 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback };
+const config = { fps: 10, qrbox: { width: 400, height: 400 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback };
 
 const qrcodeRegionId = "html5qr-code-full-region";
 
-export const Welcome = () => {
+export const New = () => {
 
   const {fetchCameras, state: {loading, error, cameraDevices}} = useFetchCameras();
   const [selectedCameraId] = useState<string | undefined>(undefined);
