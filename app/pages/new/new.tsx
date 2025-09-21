@@ -23,17 +23,26 @@ enum PluginState {
 
 const itQrCodeSuccessCallback = (decodedText: string, decodedResult: any) => {
   console.log(`Code matched = ${decodedText}`, decodedResult);
+  handleCopyClick(decodedText);
 }
+
+const handleCopyClick = async (code: string) => {
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+        }
+      };
 
 const itQrCodeErrorCallback = (errorMessage: string) => {
   
 }
 
-const config = { fps: 10, qrbox: { width: 400, height: 400 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback };
+const config = { fps: 4, qrbox: { width: 250, height: 200 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback, aspectRatio: 1.333334	 };
 
 const qrcodeRegionId = "html5qr-code-full-region";
 
-export const New = () => {
+export default function New() {
 
   const {fetchCameras, state: {loading, error, cameraDevices}} = useFetchCameras();
   const [selectedCameraId] = useState<string | undefined>(undefined);
@@ -56,11 +65,9 @@ export const New = () => {
         // stopping due changed qrcodeRegionId
         html5Qrcode.current?.stop()
           .then(() => {
-            console.log("Camera stopped due changed qrcodeRegionId");
             // camera stopped
           })
           .catch(() => {
-            console.log("Camera failed to stop due changed qrcodeRegionId");
             // camera failed to stop
           });
       }
@@ -80,11 +87,9 @@ export const New = () => {
       html5Qrcode.current
         .start(cameraId, config, config.qrCodeSuccessCallback, config.itQrCodeErrorCallback)
         .then(() => {
-          console.log("Camera started", qrCodeRegionRef.current);
           pluginStateRef.current = PluginState.Started;
         })
         .catch(() => {
-          console.log("Camera failed to start");
           pluginStateRef.current = PluginState.StartingFailed;
         });
     }
@@ -93,11 +98,9 @@ export const New = () => {
         html5Qrcode.current
           ?.stop()
           .then(() => {
-            console.log("Camera stopped");
             pluginStateRef.current = PluginState.Initial;
           })
           .catch(() => {
-            console.log("Camera failed to stop");
             pluginStateRef.current = PluginState.StoppingFailed;
           });
       }
@@ -127,7 +130,7 @@ export const New = () => {
           Scan QR Code
         </h1>
         <p className='header'> Scan the invoice QR code to add its</p>
-        <div className='qr-code-scanner' id={qrcodeRegionId} ref={qrCodeRegionRef}></div>
+        <div className='qr-code-scanner' id={qrcodeRegionId} ref={qrCodeRegionRef} />
       </div>
     </main>
   );

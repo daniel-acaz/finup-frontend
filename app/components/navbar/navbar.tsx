@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 const pages: Record<number, string> = {
       0: "/invoices",
-      1: "/",
+      1: "/new",
       2: "/account"
 }
 

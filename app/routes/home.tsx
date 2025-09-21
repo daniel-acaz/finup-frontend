@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { New } from "../pages/new/new";
+import Invoices from "~/pages/invoices/invoices";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -9,6 +9,6 @@ export function meta(_: Route.MetaArgs) {
 }
 export default function Home() {
   return (
-      <New />
+      <Invoices />
   );
 }
