@@ -4,6 +4,7 @@
     justify-content: center;
     padding-top: 4rem;
     padding-bottom: 1rem;
+    width: 100%;
 }
 
 .content {
@@ -12,6 +13,8 @@
     align-items: center;
     gap: 4rem;
     min-height: 0;
+    width: 100%;
+    padding: 2rem;
 }
 
 .title {
@@ -19,6 +22,7 @@
     font-weight: 700;
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    color: #1976D2;
 }
 
 .header {
@@ -27,8 +31,9 @@
     font-weight: 300;
     font-family: 'Roboto', sans-serif;
     width: 180px;
+    color: #1976D2;
 }
 
 .qr-code-scanner {
-    width: 300px;
+    width: 100%;
 }
