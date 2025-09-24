@@ -6,7 +6,11 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "docker:clean": "docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)",
+    "docker:build": "docker buildx build --platform linux/amd64 -t gcr.io/vbreddyblog/blog .",
+    "docker:run":   "docker run --name vbreddy-blog -p 8080:80 -d gcr.io/vbreddyblog/blog",
+    "docker:push": "docker push gcr.io/vbreddyblog/blog"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

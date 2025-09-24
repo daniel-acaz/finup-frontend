@@ -1,6 +1,6 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material"
 import ListIcon from "@mui/icons-material/List";
-import QRCode2Icon from "@mui/icons-material/QRCode2";
+import QRCode2Icon from "@mui/icons-material/QrCode2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import { useNavigate } from "react-router";

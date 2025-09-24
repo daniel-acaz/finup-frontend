@@ -1,22 +1,20 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN npm ci
+FROM node:24.0.1 as build
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
-WORKDIR /app
-RUN npm ci --omit=dev
+WORKDIR /finup-frontend
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
 RUN npm run build
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
-WORKDIR /app
-CMD ["npm", "run", "start"]
+FROM node:24.0.1
+
+WORKDIR /finup-frontend
+
+COPY --from=build /finup-frontend/package*.json ./
+COPY --from=build /finup-frontend/node_modules ./node_modules
+COPY --from=build /finup-frontend/build ./build
+
+EXPOSE 3000
+
+CMD ["npx", "react-router-serve", "./build/server/index.js"]
