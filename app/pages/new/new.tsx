@@ -1,7 +1,8 @@
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeScannerState } from 'html5-qrcode';
 import { useEffect, useRef, useState } from 'react';
 import './new.css';
 import { useFetchCameras } from '~/shared/useFetchCameras';
+import { QrCodeNumber } from '~/components/qrCodeNumber/qrCodeNumber';
 
 interface IInfoProps {
   title: string
@@ -21,24 +22,9 @@ enum PluginState {
   StoppingFailed = 'stoppingFailed'
 }
 
-const itQrCodeSuccessCallback = (decodedText: string, decodedResult: any) => {
-  console.log(`Code matched = ${decodedText}`, decodedResult);
-  handleCopyClick(decodedText);
-}
-
-const handleCopyClick = async (code: string) => {
-        try {
-          await navigator.clipboard.writeText(code);
-        } catch (err) {
-          console.error('Failed to copy text: ', err);
-        }
-      };
-
 const itQrCodeErrorCallback = (errorMessage: string) => {
   
 }
-
-const config = { fps: 4, qrbox: { width: 250, height: 200 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback, aspectRatio: 1.333334	 };
 
 const qrcodeRegionId = "html5qr-code-full-region";
 
@@ -50,7 +36,15 @@ export default function New() {
   const pluginStateRef = useRef<PluginState>(PluginState.Initial);
   const qrCodeRegionRef = useRef<HTMLDivElement | null>(null);
   const [isScannerReady, setIsScannerReady] = useState(false);
+  const [qrCodeNumber, setQrCodeNumber] = useState<string | null>(null);
   let cameraId: string | undefined
+
+  const itQrCodeSuccessCallback = (decodedText: string, decodedResult: any) => {
+    setQrCodeNumber(decodedText);
+    console.log(`Code matched = ${qrCodeNumber}`, decodedResult);
+  }
+
+  const config = { fps: 4, qrbox: { width: 250, height: 200 }, disableFlip: false, qrCodeSuccessCallback: itQrCodeSuccessCallback, itQrCodeErrorCallback, aspectRatio: 1.333334	 };
 
   useEffect(() => {
     fetchCameras();
@@ -75,13 +69,15 @@ export default function New() {
   }, [isScannerReady, qrcodeRegionId]);
 
   useEffect(() => {
+    console.log('USE EFFECT 3: Starting camera');
     cameraId = selectedCameraId || cameraDevices[0]?.id;
     if (!isScannerReady) return;
     
     if (
       html5Qrcode.current &&
       pluginStateRef.current !== PluginState.Starting &&
-      cameraId !== undefined
+      cameraId !== undefined &&
+      qrCodeNumber === null
     ) {
       pluginStateRef.current = PluginState.Starting;
       html5Qrcode.current
@@ -94,7 +90,8 @@ export default function New() {
         });
     }
     return () => {
-      if (html5Qrcode.current && pluginStateRef.current !== PluginState.Starting) {
+      console.log('USE EFFECT 3 CALLBACK: Stop camera');
+      if (html5Qrcode.current && html5Qrcode.current.getState() != Html5QrcodeScannerState.NOT_STARTED && pluginStateRef.current !== PluginState.Starting) {
         html5Qrcode.current
           ?.stop()
           .then(() => {
@@ -129,8 +126,8 @@ export default function New() {
         <h1 className='title'>
           Scan QR Code
         </h1>
-        <p className='header'> Scan the invoice QR code to add its</p>
-        <div className='qr-code-scanner' id={qrcodeRegionId} ref={qrCodeRegionRef} />
+        <p className='header'> {qrCodeNumber ? "QR Code Scanned": "Scan the invoice QR code to add its"}</p>
+        {qrCodeNumber? <QrCodeNumber qrCodeNumber={qrCodeNumber} setQrCodeNumber={setQrCodeNumber} /> : <div className='qr-code-scanner' id={qrcodeRegionId} ref={qrCodeRegionRef} />}
       </div>
     </main>
   );
