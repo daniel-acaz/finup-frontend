@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import './new.css';
 import { useFetchCameras } from '~/shared/useFetchCameras';
 import { QrCodeNumber } from '~/components/qrCodeNumber/qrCodeNumber';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 interface IInfoProps {
   title: string
@@ -31,7 +32,7 @@ const qrcodeRegionId = "html5qr-code-full-region";
 export default function New() {
 
   const {fetchCameras, state: {loading, error, cameraDevices}} = useFetchCameras();
-  const [selectedCameraId] = useState<string | undefined>(undefined);
+  const [selectedCameraId, setSelectedCameraId] = useState<string | undefined>(undefined);
   const html5Qrcode = useRef<null | Html5Qrcode>(null);
   const pluginStateRef = useRef<PluginState>(PluginState.Initial);
   const qrCodeRegionRef = useRef<HTMLDivElement | null>(null);
@@ -90,7 +91,6 @@ export default function New() {
         });
     }
     return () => {
-      console.log('USE EFFECT 3 CALLBACK: Stop camera');
       if (html5Qrcode.current && html5Qrcode.current.getState() != Html5QrcodeScannerState.NOT_STARTED && pluginStateRef.current !== PluginState.Starting) {
         html5Qrcode.current
           ?.stop()
@@ -102,7 +102,7 @@ export default function New() {
           });
       }
     };
-  }, [isScannerReady, config.qrCodeSuccessCallback]);
+  }, [isScannerReady, config.qrCodeSuccessCallback, setSelectedCameraId]);
 
 
   useEffect(() => {
@@ -128,6 +128,18 @@ export default function New() {
         </h1>
         <p className='header'> {qrCodeNumber ? "QR Code Scanned": "Scan the invoice QR code to add its"}</p>
         {qrCodeNumber? <QrCodeNumber qrCodeNumber={qrCodeNumber} setQrCodeNumber={setQrCodeNumber} /> : <div className='qr-code-scanner' id={qrcodeRegionId} ref={qrCodeRegionRef} />}
+        {qrCodeNumber == null && <FormControl fullWidth>
+          <InputLabel shrink htmlFor="select-multiple-native">
+            Camera
+          </InputLabel>
+          <Select size="small" autoFocus={true} label="Camera" value={selectedCameraId || cameraDevices[0]?.id || "Select Camera"} color='primary' onChange={(event) => {
+            setSelectedCameraId(event.target.value);
+          }}>
+            {cameraDevices.map(device => (
+              <MenuItem key={device.id} value={device.id}>{device.label}</MenuItem>
+            ))}
+            </Select>
+          </FormControl>}
       </div>
     </main>
   );
