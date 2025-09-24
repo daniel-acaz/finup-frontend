@@ -70,13 +70,13 @@ export default function New() {
   }, [isScannerReady, qrcodeRegionId]);
 
   useEffect(() => {
-    console.log('USE EFFECT 3: Starting camera');
     cameraId = selectedCameraId || cameraDevices[0]?.id;
     if (!isScannerReady) return;
     
     if (
       html5Qrcode.current &&
       pluginStateRef.current !== PluginState.Starting &&
+      pluginStateRef.current !== PluginState.Started &&
       cameraId !== undefined &&
       qrCodeNumber === null
     ) {
@@ -90,6 +90,7 @@ export default function New() {
           pluginStateRef.current = PluginState.StartingFailed;
         });
     }
+
     return () => {
       if (html5Qrcode.current && html5Qrcode.current.getState() != Html5QrcodeScannerState.NOT_STARTED && pluginStateRef.current !== PluginState.Starting) {
         html5Qrcode.current
@@ -102,7 +103,7 @@ export default function New() {
           });
       }
     };
-  }, [isScannerReady, config.qrCodeSuccessCallback, setSelectedCameraId]);
+  }, [isScannerReady, config.qrCodeSuccessCallback, selectedCameraId]);
 
 
   useEffect(() => {
