@@ -5,7 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, TextField } from "@mui/material";
 import "./login.css";
 
-export function Login() {
+export default function Login() {
     
     return <div>
         <div className="logo">

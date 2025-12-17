@@ -13,6 +13,7 @@ import "./app.css";
 import '@fontsource/roboto/700.css';
 import '@fontsource/roboto/400.css';
 import { NavBar } from "./components/navbar/navbar";
+import { AuthProvider } from "./shared/authContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -37,7 +38,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -46,10 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <>
-        <Outlet />
-        <NavBar />
-      </>
+  return <Outlet />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

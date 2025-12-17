@@ -1,4 +1,4 @@
-import { Login } from "~/pages/login/login";
+import { NavBar } from "~/components/navbar/navbar";
 import type { Route } from "./+types/home";
 import Invoices from "~/pages/invoices/invoices";
 
@@ -10,6 +10,9 @@ export function meta(_: Route.MetaArgs) {
 }
 export default function Home() {
   return (
-      <Login />
+    <>
+      <Invoices />
+      <NavBar />
+    </>
   );
 }
