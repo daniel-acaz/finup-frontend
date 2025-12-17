@@ -1,0 +1,41 @@
+.logo {
+    display: flex;
+    justify-content: center;
+    padding: 15% 15%;
+}
+
+.login-inputs  {
+    display: inline-grid;
+    width: 100%;
+    padding: 0% 10%;
+    gap: 40px;
+}
+
+.login-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding: 30px 5% 5% 5%;
+}
+
+.login-actions .checkbox {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+}
+
+.login-buttons {
+    display: grid;
+    padding: 5% 10%;
+    gap: 30px;
+    align-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-buttons .login-standard {
+    justify-self: center;
+}
