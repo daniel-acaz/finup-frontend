@@ -1,3 +1,4 @@
+import { NavBar } from "~/components/navbar/navbar";
 import type { Route } from "./+types/home";
 import Invoices from "~/pages/invoices/invoices";
 
@@ -9,6 +10,9 @@ export function meta(_: Route.MetaArgs) {
 }
 export default function Home() {
   return (
+    <>
       <Invoices />
+      <NavBar />
+    </>
   );
 }
