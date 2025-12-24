@@ -4,8 +4,11 @@ import MicrosoftIcon from '@mui/icons-material/Microsoft';
 import Checkbox from "@mui/material/Checkbox";
 import { Button, TextField } from "@mui/material";
 import "./login.css";
+import { useNavigate } from 'react-router';
 
 export default function Login() {
+
+    const navigate = useNavigate();
     
     return <div>
         <div className="logo">
@@ -28,6 +31,9 @@ export default function Login() {
             <Button variant="outlined" color="inherit" startIcon={<GoogleIcon color="error" />} fullWidth={true}>Login with Google</Button>
             <Button variant="outlined" color="inherit" startIcon={<AppleIcon />}>Login with Apple</Button>
             <Button variant="outlined" color="inherit" startIcon={<MicrosoftIcon color="primary" />}>Login with Microsoft</Button>
+        </div>
+        <div className='register-button'>
+            <p>Don't have an account? <button onClick={() => navigate('/register')}>Sign here</button></p>
         </div>
     </div>; 
 }

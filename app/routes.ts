@@ -5,6 +5,8 @@ export default [
   
   layout("layouts/PublicLayout.tsx", [
     route("login", "pages/login/login.tsx"),
+    route("register", "pages/register/register.tsx"),
+    route("verification", "pages/verification/verification.tsx"),
   ]),
   
   layout("layouts/ProtectedLayout.tsx", [

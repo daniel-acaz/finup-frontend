@@ -1,7 +1,7 @@
 .logo {
     display: flex;
     justify-content: center;
-    padding: 15% 15%;
+    padding: 10% 15%;
 }
 
 .login-inputs  {
@@ -29,7 +29,7 @@
 .login-buttons {
     display: grid;
     padding: 5% 10%;
-    gap: 30px;
+    gap: 20px;
     align-content: center;
     text-align: center;
     font-weight: bold;
@@ -38,4 +38,18 @@
 
 .login-buttons .login-standard {
     justify-self: center;
+}
+
+.register-button {
+    text-align: center;
+    font-size: small;
+    font-family: 'Roboto', sans-serif;
+}
+
+.register-button button {
+    color: #1976D2;
+    font-weight: bold;
+    cursor: pointer;
+    background: 'none';
+    border: 'none';
 }
